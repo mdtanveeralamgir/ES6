@@ -1,26 +1,9 @@
-//null
-/*
-null is an obj
-it's a falsy value
-null == undefine; //true
-null === undefine; //false (value is same but type is deffirent)
+//object
+let obj = {
+    "key name" : "value", 
+    integer: 123 //key can be inside double colon if there is no space or special character
+};
 
-*/
-console.log(typeof null);
-
-//undefine
-/*
-a variable that has not been assigned any value yet
-undefine is a global obj
-if a function returns nothing then it will be undefine
-null == undefine; //true
-null === undefine; //false (value is same but type is deffirent)
-*/
-console.log(typeof undefined);
-
-//NaN
-/*
-Not a number
-gets this message when trying to do some arrithmatinc operation on a non numaric value
-*/
-console.log(typeof NaN);
+//access obj
+console.log(obj["key name"]);
+console.log(obj.integer); //if the key is not wrapped by colons
