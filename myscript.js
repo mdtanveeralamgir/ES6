@@ -1,37 +1,38 @@
+/*
+Higher order function
+Any function that takes a fucntion as an argument or returns a function is a higher order function
+higher order function for arrays in js: map(), sort(), filter(), reduce(),
+*/
 
 
-class Counter{
-    
-    constructor(start = 0, wait){
-        this.count = start;
-        this.wait = wait;
-        this.p = document.createElement("p");
-        document.body.appendChild(this.p);
-    }
-
-
-    countIt(){
-        this.count++;
-        this.p.innerHTML = this.count;
-    }
-
-    /*
-    A call back function
-    setInterval is taking 2 params
-    firs one is the function countIt
-    sendond one is the wait time
-    */
-    start(){
-        setInterval(() => this.countIt(), this.wait);
-    }
-     
+//Takes a function as param and calls it
+//In the param don't write like callback()
+//because it's the param not the function itself.
+function sing(callback){
+    console.log("song");
+    if(callback instanceof Function) //making sure if callback is a function
+        callback();
 }
 
-let count1 = new Counter(100, 300);
+function dance(){
+    console.log("dancing");
+}
 
-let count2 = new Counter(10, 200);
+sing(dance);
+//another way to pass function into sing as param
+sing(function () {console.log("dancing");});
+//more simplarer way. ES6 version
+sing(() => {console.log("dancing");});
 
-count1.start();
+//*******************************
 
-count2.start();
+//function returns a function
+function multiplier(factor){
+    return (x) => x * factor;
+}
 
+//Creating an array that holds 10 functions
+let arr = [];
+for(let i = 1; i < 11; i++){
+    arr.push((x) => x * i);
+}
