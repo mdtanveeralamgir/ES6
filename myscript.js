@@ -1,38 +1,29 @@
 /*
-Higher order function
-Any function that takes a fucntion as an argument or returns a function is a higher order function
-higher order function for arrays in js: map(), sort(), filter(), reduce(),
+different array functions
 */
+let arr = [1,2,3,4,5,6,7];
 
-
-//Takes a function as param and calls it
-//In the param don't write like callback()
-//because it's the param not the function itself.
-function sing(callback){
-    console.log("song");
-    if(callback instanceof Function) //making sure if callback is a function
-        callback();
+//map()
+function doubler(x){
+    return x * 2;
 }
 
-function dance(){
-    console.log("dancing");
-}
+//map() does not modify current array. It works on the element of the array and returns a new array
 
-sing(dance);
-//another way to pass function into sing as param
-sing(function () {console.log("dancing");});
-//more simplarer way. ES6 version
-sing(() => {console.log("dancing");});
+// let doubled = arr.map(doubler);
+//simpler way
+doubled = arr.map(x => x * 2);
+console.log(doubled);
 
-//*******************************
+//fill and map together
+//first way
+let val = new Array(10);
+//fill(): will fill the array with undefine
+//map(() => Math.random()): will replace undefine with random numbers and return a new array.
+val = val.fill().map(() => Math.random());
+// console.log(val);
 
-//function returns a function
-function multiplier(factor){
-    return (x) => x * factor;
-}
+//sorter way
 
-//Creating an array that holds 10 functions
-let arr = [];
-for(let i = 1; i < 11; i++){
-    arr.push((x) => x * i);
-}
+let value = Array(10).fill().map(Math.random);
+console.log(value);
