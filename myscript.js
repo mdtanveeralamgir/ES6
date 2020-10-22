@@ -17,13 +17,12 @@ class Counter{
 
     /*
     A call back function
-    
+    setInterval is taking 2 params
+    firs one is the function countIt
+    sendond one is the wait time
     */
     start(){
-        setInterval(() =>{
-        this.countIt();       
-        }
-        , this.wait);
+        setInterval(() => this.countIt(), this.wait);
     }
      
 }
