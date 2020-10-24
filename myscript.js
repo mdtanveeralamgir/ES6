@@ -1,51 +1,49 @@
-//reduce on array
+let activity = "http://www.boredapi.com/api/activity/";
+let randomImage = "https://picsum.photos/200";
+
 /*
-reduce takes a higher order function
-that higher order function takes 2 param
-1st one is accumulator
-2nd one is currentValue (elements in an array)
-syntex: reducer(accu, currentVal); Array.reduce(reducer);
-syntex: (initial value of accu can be passed implicitely) Array.reduce(reducer, 0);
+fetch returns a promise (after fetching the data from the url)
+then the response needs to be converted into json format
+response.json also returns a promise. so we need to 
 */
 
-let arr = [2,5,6,8,9,8,7,8,4,99];
-
-//adding up all the value in the array
-let sum = arr.reduce((accumulator, currentValue) => accumulator + currentValue);
-console.log(sum);
-
-//finding the max element in the array
-let max = arr.reduce((accu, currentValue) => accu > currentValue ? accu : currentValue);
-//The 0 at the end mins accu default value will be 0.
-//If there is nothing less than 0 in the arr then the min will be 0.
-let min = arr.reduce((accu, currentValue) => accu < currentValue ? accu : currentValue, 0);
-console.log(min);
-
-
-//********************************************************
-
-//filter on array
+//Minimized version
 /*
-return true if the condition stands on the each element of the array, else false
-final return is a new array with the elements where the if condition was true
+first fetch the activity
+then fetch the image
 */
+fetch(activity) //fetching data from activity and returning a promise
+.then(response => response.json()) //Once the fetch is successfully completed then convert the data into json
+.then(json => {
+	createP(json); //passing that json file and creating paragraph out of data
+	return fetch(randomImage); //In the chain of promise for fetch "return" needs to present
+})
+.then(setImg).catch(err => console.log(err)); //once the image fetch is done then fetch the image and set the image.
+//The catch will collect any error that may happened in this whole chain of promise
 
-//finding prime number
-function isPrime(num){
-    for(let i = 2; num > i; i++){
-        if(num % i == 0)
-            return false;
-    }
+// fetch(activity).then(response => response.json()).then(createP).catch(err => console.log(err));
+// fetch(randomImage).then(setImg).catch(err => console.log(err));
 
-    return num > 1;
+function createP(obj){
+	
+	for(let key in obj){
+		let title = document.createElement("h4");
+		let nodeH = document.createTextNode(key);
+		title.appendChild(nodeH);
+		let paragraph = document.createElement("p");
+		let nodeP = document.createTextNode(obj[key]);
+		paragraph.appendChild(nodeP);
+		document.body.appendChild(title);
+		document.body.appendChild(paragraph);
+	}
 }
 
-let primeNumber = arr.filter(isPrime);
+function setImg(obj){
+	let img = document.createElement("IMG");
+	img.setAttribute("src", obj["url"]);
+	img.setAttribute("height", "200");
+	img.setAttribute("width", "200");
+	document.body.appendChild(img);
+	// console.log(obj);
+}
 
-console.log(primeNumber);
-
-//filter on string
-let string = "Today is Thursday";
-// "/\W+/" : regular expression. means anything from a - z and 0 to 9.
-let s = string.split(/\W+/).filter(word => word.length >= 3);
-console.log(s);
