@@ -1,49 +1,57 @@
-let activity = "http://www.boredapi.com/api/activity/";
-let randomImage = "https://picsum.photos/200";
+//Creating promise
 
-/*
-fetch returns a promise (after fetching the data from the url)
-then the response needs to be converted into json format
-response.json also returns a promise. so we need to 
-*/
-
-//Minimized version
-/*
-first fetch the activity
-then fetch the image
-*/
-fetch(activity) //fetching data from activity and returning a promise
-.then(response => response.json()) //Once the fetch is successfully completed then convert the data into json
-.then(json => {
-	createP(json); //passing that json file and creating paragraph out of data
-	return fetch(randomImage); //In the chain of promise for fetch "return" needs to present
-})
-.then(setImg).catch(err => console.log(err)); //once the image fetch is done then fetch the image and set the image.
-//The catch will collect any error that may happened in this whole chain of promise
-
-// fetch(activity).then(response => response.json()).then(createP).catch(err => console.log(err));
-// fetch(randomImage).then(setImg).catch(err => console.log(err));
-
-function createP(obj){
-	
-	for(let key in obj){
-		let title = document.createElement("h4");
-		let nodeH = document.createTextNode(key);
-		title.appendChild(nodeH);
-		let paragraph = document.createElement("p");
-		let nodeP = document.createTextNode(obj[key]);
-		paragraph.appendChild(nodeP);
-		document.body.appendChild(title);
-		document.body.appendChild(paragraph);
+let cleanRoam = new Promise((resolve, reject) => {
+	//Code to clean the room
+	let result = false;
+	if(result){
+		resolve('cleaned');//This argument will be passed to the then callback function.
+	} else{
+		reject('is not cleaned'); //This argument will be passed to the catch callback function.
 	}
+});
+
+cleanRoam.then(fromResolved =>{
+	console.log(fromResolved); //fronResolved is the argument passed to the resolved in the promise
+}).catch(fronReject => {
+	console.log(fronReject); //fronResolved is the argument passed to the reject in the promise
+});
+
+/*
+Chain of promises
+clean the room, clear the garbage, get an ice-cream as reward
+*/ 
+
+//Clean the room
+let cleanRoom = function(){
+	return new Promise((resolve, reject) => {
+		resolve('Cleaned the room');
+	});
 }
 
-function setImg(obj){
-	let img = document.createElement("IMG");
-	img.setAttribute("src", obj["url"]);
-	img.setAttribute("height", "200");
-	img.setAttribute("width", "200");
-	document.body.appendChild(img);
-	// console.log(obj);
+//Clear the garbage
+let clearGarbage = function(message){
+	return new Promise((resolve, reject) => {
+		resolve(message + ' Cleared the garbage');
+	});
 }
 
+//Get ice-cream
+let getIceCream = function(message){
+	return new Promise((resolve, reject) => {
+		resolve(message + ' Got ice cream');
+	})
+}
+
+//Chain of promise
+cleanRoom()
+.then((msgAfterCleanRoom) => clearGarbage(msgAfterCleanRoom))
+.then((msgAfterClearGarbeg) => getIceCream(msgAfterClearGarbeg))
+.then((finalMessage) => console.log(finalMessage));
+
+//All finished together
+//values param will catch the message (param) for all the promise
+Promise.all([cleanRoom(), clearGarbage(), getIceCream()]).then((values) => console.log('All finished ' + values));
+
+//Any promise to be finished
+//If any of the 3 promises is finished then we will get the result
+Promise.race([cleanRoom(), clearGarbage(), getIceCream()]).then((values) => console.log('One of them is finished ' + values));
