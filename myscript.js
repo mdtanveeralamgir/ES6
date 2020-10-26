@@ -1,25 +1,27 @@
-//cloure
+//callback
 
-//Lexical scoping: variable define outside function scope is available inside the function but variable define inside function is not 
-//available outside function
-
-//Simple example
-let value = 3;
-let addNum = function() {
-    let inner = 2; //only available inside this function
-    return value + inner;
+class Test {
+    constructor(passed, str) {
+        this.value = passed;
+        this.text = str;
+    }
 }
 
-//Closure proper example
-
-let addTo = function(passed) { //A function takes a param (int)
-    return (inner) => passed + inner; //returns a function that takes another param and add it with outer param (passed)
+let arr = new Array(5);
+let arrStr = ['Apple', 'apple', 'goava', 'Banana', 'peace'];
+for (let i = 0; i < arr.length; i++) {
+    arr[i] = new Test(i, arrStr[i]);
 }
-
-let addTwo = addTo(1);
-console.log(addTwo(2)); //Answer is e
 
 /*
-Above when the addTo returns a function the function preserve the value passed through param "passed"
-this is called closure
+below sort function on array takes a call back and performs the sorting based on the function defination
 */
+
+arr.sort((val1, val2) => {
+    if (val1.text > val2.text) { //desending order based on text
+        return 1;
+    }
+    return -1;
+});
+
+console.log(arr);
