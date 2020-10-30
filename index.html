@@ -6,10 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Skeleton/css/normalize.css">
     <link rel="stylesheet" href="Skeleton/css/skeleton.css">
+    <link rel="stylesheet" href="style.css">
     <title>EM6</title>
 </head>
 
 <body>
+
+    <div id="form-div">
+        <form method="GET" action="">
+            <div class="row">
+                <div class="six columns">
+                    <label for="title">Title</label>
+                    <input class="u-full-width" type="text" placeholder="title" id="title">
+                </div>
+                <div class="six columns">
+                    <label for="author">Author</label>
+                    <input class="u-full-width" type="text" placeholder="Author" id="author">
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label for="pages">Total Page</label>
+                    <input class="u-full-width" type="text" placeholder="Total Page" id="totalPage">
+                </div>
+                <div class="six columns">
+                    <label for="boolean">Read</label>
+                    <select class="u-full-width" id="hasRead">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                </div>
+            </div>
+            <input class="button button-primary center-button" type="button" name="My button" value="Click" onClick="addData();">
+
+        </form>
+    </div>
+
+    <div id="table-data">
+        <button class="button button-primary center-button" id="addButton" onclick="showHideForm()">Add a new book</button>
+    </div>
 
 
     <script src="myscript.js">

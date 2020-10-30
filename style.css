@@ -1,0 +1,12 @@
+body {
+    padding: 15px;
+}
+
+.center-button {
+    margin: auto;
+    display: block;
+}
+
+#form-div {
+    display: none;
+}
