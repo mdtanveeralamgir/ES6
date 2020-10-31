@@ -23,8 +23,16 @@ let book1 = new Book('Debdash', 'HA', 200, 'Yes');
 
 //Adding book obj into local storage
 function addBookToLocalStorage(bookName, book) {
-    localStorage.setItem(bookName, JSON.stringify(book));
+    if (!isExist(bookName)) {
+        localStorage.setItem(bookName, JSON.stringify(book));
+    }
 };
+
+//check if book object is already exist in the localStorage
+function isExist(bookName) {
+    let book = localStorage.getItem(bookName);
+    return book != null ? true : false;
+}
 
 //Retreving book obj from localStorage
 let getBookFromLocalStorage = () => {
@@ -32,7 +40,7 @@ let getBookFromLocalStorage = () => {
     for (let i = 0; i < localStorage.length; i++) {
         let bookName = 'book' + i;
         let element = JSON.parse(localStorage.getItem(bookName));
-        createTable(table, element);
+        createTable(table, element, bookName);
     }
 
 };
@@ -54,15 +62,21 @@ function createTableHead() {
 }
 
 //Generating table
-function createTable(table, element) {
+function createTable(table, element, key) {
 
     let row = table.insertRow();
     let tableData = document.getElementById('table-data');
-    for (key in element) {
+
+    for (let key in element) {
         let cell = row.insertCell();
         let text = document.createTextNode(element[key]);
         cell.appendChild(text);
     }
+    //add button
+    let removeButton = addButton('Remove', key);
+    let readUnread = addButton('Read/Unread', key);
+    row.appendChild(removeButton);
+    row.appendChild(readUnread);
     tableData.appendChild(table);
 }
 
@@ -74,18 +88,36 @@ function showHideForm() {
     }
 }
 
-// function addButton() {
-//     let button = document.createElement('BUTTON');
-//     button.classList.add('button-primary');
-//     button.classList.add('center-button');
-//     button.id = 'add-button';
-//     // button = document.getElementById('addb-button');
-//     let text = document.createTextNode('Add New Book');
-//     button.appendChild(text);
-//     button.addEventListener("click", showHideForm);
-//     document.body.appendChild(button);
+function addButton(buttonName, attri) {
+    let button = document.createElement('BUTTON');
+    // button.classList.add('button-primary');
+    // button.classList.add('center-button');
+    // button.id = 'add-button';
+    // button = document.getElementById('addb-button');
+    button.setAttribute('data-value', attri);
+    let text = document.createTextNode(buttonName);
+    button.appendChild(text);
+    if (buttonName == 'Remove') {
+        button.addEventListener('click', removeItem);
+    } else if (buttonName == 'Read/Unread') {
+        button.addEventListener('click', changeRead);
+    }
 
-// }
+
+    // button.addEventListener("click", showHideForm);
+    return button;
+
+}
+
+function removeItem() {
+    console.log(this.getAttribute('data-value'));
+    localStorage.removeItem(this.getAttribute('data-value'));
+    location.reload();
+}
+
+function changeRead() {
+    console.log(this.getAttribute('data-value'));
+}
 
 
 function addData() {
@@ -97,22 +129,21 @@ function addData() {
     if (title.value == '' || author.value == '' || totalPage.value == '') {
         console.log('invalid input');
     } else {
-        let newKey = localStorage.length;
-        let bookName = 'book' + newKey;
+        let bookName = 'book' + localStorage.length;
         let book = new Book(title.value, author.value, totalPage.value, hasRead.value);
         addBookToLocalStorage(bookName, book);
+        location.reload();
     }
 }
 
 
 function run() {
-    // localStorage.clear();
-    for (let i = 0; i < 10; i++) {
-        let bookName = 'book' + i;
-        addBookToLocalStorage(bookName, book1);
-    }
+    // for (let i = 0; i < 10; i++) {
+    //     let bookName = 'book' + i;
+    //     addBookToLocalStorage(bookName, book1);
+    // }
     getBookFromLocalStorage();
-    console.log(localStorage)
+
 }
 
 run();
