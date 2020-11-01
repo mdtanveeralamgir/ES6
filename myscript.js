@@ -5,11 +5,11 @@
 
 
 //Book object
-function Book(title, author, totalPage, hasRed) {
+function Book(title, author, totalPage, hasRead) {
     this.title = title;
     this.author = author;
     this.totalPage = totalPage;
-    this.hasRed = hasRed;
+    this.hasRead = hasRead;
 
 
 }
@@ -23,9 +23,7 @@ let book1 = new Book('Debdash', 'HA', 200, 'Yes');
 
 //Adding book obj into local storage
 function addBookToLocalStorage(bookName, book) {
-    if (!isExist(bookName)) {
-        localStorage.setItem(bookName, JSON.stringify(book));
-    }
+    localStorage.setItem(bookName, JSON.stringify(book));
 };
 
 //check if book object is already exist in the localStorage
@@ -62,7 +60,7 @@ function createTableHead() {
 }
 
 //Generating table
-function createTable(table, element, key) {
+function createTable(table, element, attri) {
 
     let row = table.insertRow();
     let tableData = document.getElementById('table-data');
@@ -73,8 +71,8 @@ function createTable(table, element, key) {
         cell.appendChild(text);
     }
     //add button
-    let removeButton = addButton('Remove', key);
-    let readUnread = addButton('Read/Unread', key);
+    let removeButton = addButton('Remove', attri);
+    let readUnread = addButton('Read/Unread', attri);
     row.appendChild(removeButton);
     row.appendChild(readUnread);
     tableData.appendChild(table);
@@ -90,10 +88,6 @@ function showHideForm() {
 
 function addButton(buttonName, attri) {
     let button = document.createElement('BUTTON');
-    // button.classList.add('button-primary');
-    // button.classList.add('center-button');
-    // button.id = 'add-button';
-    // button = document.getElementById('addb-button');
     button.setAttribute('data-value', attri);
     let text = document.createTextNode(buttonName);
     button.appendChild(text);
@@ -110,13 +104,21 @@ function addButton(buttonName, attri) {
 }
 
 function removeItem() {
-    console.log(this.getAttribute('data-value'));
     localStorage.removeItem(this.getAttribute('data-value'));
     location.reload();
 }
 
 function changeRead() {
-    console.log(this.getAttribute('data-value'));
+    let bookName = this.getAttribute('data-value');
+    let book = JSON.parse(localStorage.getItem(bookName));
+    if (book.hasRead == 'Yes') {
+        let newBook = new Book(book.title, book.author, book.totalPage, 'No');
+        addBookToLocalStorage(bookName, newBook);
+    } else {
+        let newBook = new Book(book.title, book.author, book.totalPage, 'Yes');
+        addBookToLocalStorage(bookName, newBook);
+    }
+    location.reload();
 }
 
 
@@ -138,6 +140,7 @@ function addData() {
 
 
 function run() {
+    // localStorage.clear();
     // for (let i = 0; i < 10; i++) {
     //     let bookName = 'book' + i;
     //     addBookToLocalStorage(bookName, book1);
